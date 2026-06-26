@@ -1,115 +1,143 @@
-# Linux-Server-Administration-Monitoring-Automation-using-AWS-EC2
+#  Linux Server Administration & AWS Monitoring Automation
 
-A hands-on DevOps project demonstrating Linux server administration, automation, monitoring, backup, networking, and security using AWS EC2.
-
----
-
-## 📖 Project Overview
-
-This project covers the complete lifecycle of Linux server administration on AWS. It includes server setup, monitoring, backup automation, server-to-server synchronization, networking optimization, security hardening, SSH key management, and user access control.
-
-The project is designed to simulate real-world DevOps and Linux System Administration tasks.
+A complete DevOps project demonstrating Linux server administration, monitoring, backup automation, security, and an end-to-end AWS alert automation pipeline using CloudWatch, SNS, SQS, Lambda, DynamoDB, and Grafana.
 
 ---
 
-# 🏗️ Architecture
+#  Project Overview
+
+This project demonstrates real-world Linux Server Administration and AWS Cloud Monitoring.
+
+The project includes:
+
+- Linux Server Setup
+- Server Configuration
+- Server Monitoring
+- Automated Backup
+- Server-to-Server Synchronization
+- Linux Security Hardening
+- SSH Key Rotation
+- Login Restrictions
+- CloudWatch Monitoring
+- CloudWatch Alarms
+- SNS Notifications
+- SQS Queue Processing
+- AWS Lambda Automation
+- DynamoDB Alert Storage
+- Grafana Dashboard Visualization
+
+---
+
+#  Architecture
 
 ```
-                        AWS Cloud
-                            │
-                    Amazon VPC
-                            │
-        ┌───────────────────┴───────────────────┐
-        │                                       │
-   Ubuntu EC2 Server 1                    Ubuntu EC2 Server 2
-        │                                       │
-        ├──────── SSH Communication ────────────┤
-        ├──────── Rsync Synchronization ────────┤
-        │
-        ▼
-   CloudWatch Agent
-        │
-        ▼
-   Amazon CloudWatch
-        │
-        ▼
- Monitoring Dashboard
+                           AWS Cloud
+                               │
+                         Amazon VPC
+                               │
+                ┌──────────────┴──────────────┐
+                │                             │
+          EC2 Server 1                  EC2 Server 2
+                │                             │
+                ├──── SSH Communication ──────┤
+                ├──── Rsync Backup ───────────┤
+                │
+                ▼
+      CloudWatch Agent
+                │
+                ▼
+      Amazon CloudWatch
+       ├── Metrics
+       ├── Logs
+       └── Alarms
+                │
+                ▼
+        Amazon SNS Topic
+          ├── Email Alerts
+          └── Amazon SQS
+                  │
+                  ▼
+            AWS Lambda
+                  │
+                  ▼
+          Amazon DynamoDB
+                  │
+                  ▼
+         Grafana Dashboard
 ```
 
 ---
 
-# 🛠️ Technologies Used
+#  Technologies Used
 
 - Ubuntu Linux
 - AWS EC2
 - AWS VPC
-- Security Groups
-- SSH
-- Bash Scripting
-- Cron Jobs
-- Rsync
 - AWS CloudWatch
+- AWS SNS
+- AWS SQS
+- AWS Lambda
+- AWS DynamoDB
+- Grafana
+- Bash Scripting
+- SSH
+- Rsync
+- Cron Jobs
 - Git
 - GitHub
 
 ---
 
-# 📂 Project Features
+#  Features
 
 ## 1. Linux Server Setup
 
-- Launch Ubuntu EC2 instance
-- Connect using SSH
-- Install essential packages
-- Configure hostname
-- Create Linux users
-- Update system packages
+- Launch Ubuntu EC2 Instance
+- Install Required Packages
+- Configure Hostname
+- User Management
+- Package Updates
 
 ---
 
 ## 2. Server Configuration
 
-Configured Linux server with production-ready settings.
-
-### Configuration
-
-- Hostname
-- Timezone
-- Network configuration
-- Package updates
-- User management
+- Hostname Configuration
+- Timezone Configuration
+- Network Configuration
+- Package Management
 
 ---
 
 ## 3. Server Monitoring
 
-Configured CloudWatch Agent to monitor:
+Monitored server resources using CloudWatch Agent.
+
+### Metrics
 
 - CPU Usage
 - Memory Usage
 - Disk Usage
-- Network Usage
 - System Logs
 
 ---
 
 ## 4. Server Testing
 
-Performed testing for:
+Performed
 
-- CPU Load
-- Memory Usage
-- Disk Usage
-- SSH Connectivity
-- Network Connectivity
+- CPU Testing
+- Memory Testing
+- Disk Testing
+- Network Testing
 
 ---
 
-## 5. Automated Backup
+## 5. Backup Automation
 
-Created Bash scripts for automatic backups.
+Created automated backup scripts using Bash.
 
-### Features
+Features:
 
 - Scheduled Backup
 - Incremental Backup
@@ -119,70 +147,146 @@ Created Bash scripts for automatic backups.
 
 ## 6. Server-to-Server Synchronization
 
-Implemented file synchronization between two Linux servers.
+Implemented synchronization using Rsync.
 
-### Features
+Features:
 
 - Passwordless SSH
-- Rsync Synchronization
-- Automated Cron Job
-- Synchronization every 15 minutes
+- Automated Sync
+- Synchronization Every 15 Minutes
 
 ---
 
-## 7. Server Communication & Networking
+## 7. Server Networking
 
-Configured secure communication between servers.
+Configured communication between servers.
 
-### Tasks
-
-- SSH Communication
-- Private IP Connectivity
-- Ping Verification
-- Network Optimization
+- SSH
+- Private IP Communication
+- Network Verification
 
 ---
 
-## 8. Linux Server Security
+## 8. Linux Security
 
 Implemented security best practices.
-
-### Security Features
 
 - AWS VPC
 - Security Groups
 - UFW Firewall
 - Disable Root Login
 - Disable Password Authentication
-- Least Privilege Access
 
 ---
 
 ## 9. SSH Key Rotation
 
-Configured periodic SSH key rotation.
+Implemented weekly SSH key rotation.
 
-### Features
-
-- Weekly SSH Key Update
-- Authorized Keys Management
+- Authorized Keys Update
+- Cron Automation
 - Secure Authentication
 
 ---
 
 ## 10. User Login Restriction
 
-Configured server to allow only one active login session.
+Configured server access.
 
-### Features
-
-- User Session Monitoring
-- Single Active User Login
-- Access Restriction
+- Single User Login
+- Session Monitoring
 
 ---
 
-# 📁 Project Structure
+# ☁️ AWS Monitoring Pipeline
+
+## CloudWatch Agent
+
+Installed and configured CloudWatch Agent on EC2.
+
+Collected:
+
+- CPU Usage
+- Memory Usage
+- Disk Usage
+- Application Logs
+
+---
+
+## CloudWatch
+
+Created alarms for:
+
+- CPU > 70%
+- Memory > 80%
+- Disk > 80%
+
+---
+
+## Amazon SNS
+
+Configured SNS Topic.
+
+Features
+
+- Email Notifications
+- Alert Distribution
+
+---
+
+## Amazon SQS
+
+Configured SQS Queue.
+
+Purpose
+
+- Receive CloudWatch Alarm Notifications
+- Decouple Alert Processing
+- Reliable Message Queue
+
+---
+
+## AWS Lambda
+
+Created Lambda function to:
+
+- Read messages from SQS
+- Parse CloudWatch Alarm
+- Process Alert Data
+- Store Alerts into DynamoDB
+
+---
+
+## Amazon DynamoDB
+
+Created AlertLog table.
+
+Stored:
+
+- Alert ID
+- Alarm Name
+- Alarm State
+- Region
+- Timestamp
+- Alert Reason
+
+---
+
+## Grafana
+
+Integrated Grafana with CloudWatch.
+
+Dashboard Panels:
+
+- CPU Usage
+- Memory Usage
+- Disk Usage
+- CloudWatch Metrics
+- Alarm Trends
+
+---
+
+#  Project Structure
 
 ```
 Linux-Server-Administration/
@@ -192,160 +296,145 @@ Linux-Server-Administration/
 │   ├── server_setup.sh
 │   ├── backup.sh
 │   ├── rsync_sync.sh
-│   ├── monitor.sh
+│   ├── monitoring.sh
 │   ├── rotate_ssh_keys.sh
 │   ├── login_limit.sh
 │   └── firewall_setup.sh
 │
-├── configs/
-│   ├── sshd_config
-│   ├── rsync.conf
-│   ├── sysctl.conf
-│   └── crontab.txt
+├── cloudwatch/
+│   ├── amazon-cloudwatch-agent.json
+│   ├── alarms.md
+│   └── logs.md
 │
-├── monitoring/
-│   ├── cloudwatch-agent.json
-│   └── screenshots/
+├── lambda/
+│   └── lambda_function.py
+│
+├── dynamodb/
+│   └── table_schema.md
+│
+├── grafana/
+│   └── dashboard.json
 │
 ├── docs/
 │   ├── Setup.md
 │   ├── Monitoring.md
 │   ├── Backup.md
-│   ├── Networking.md
-│   └── Security.md
+│   ├── Security.md
+│   └── Networking.md
 │
-└── images/
+└── screenshots/
 ```
 
 ---
 
-# 💻 Commands Used
+#  Workflow
 
-### Update System
-
-```bash
-sudo apt update && sudo apt upgrade -y
 ```
-
-### Install Required Packages
-
-```bash
-sudo apt install nginx rsync unzip curl git -y
-```
-
-### Check Server Health
-
-```bash
-top
-free -h
-df -h
-uptime
-```
-
-### Test Network
-
-```bash
-ping google.com
-ping <SERVER_PRIVATE_IP>
-```
-
-### SSH Login
-
-```bash
-ssh -i key.pem ubuntu@SERVER_PUBLIC_IP
-```
-
-### Rsync
-
-```bash
-rsync -avz -e ssh /source/path ubuntu@SERVER2:/destination/path
-```
-
-### Cron Job
-
-```bash
-crontab -e
-```
-
-Example:
-
-```cron
-*/15 * * * * /home/ubuntu/scripts/rsync_sync.sh
+EC2
+   │
+CloudWatch Agent
+   │
+CloudWatch Metrics
+   │
+CloudWatch Alarm
+   │
+SNS Topic
+   ├── Email Notification
+   └── SQS Queue
+          │
+          ▼
+      Lambda Function
+          │
+          ▼
+     DynamoDB Table
+          │
+          ▼
+ Grafana Dashboard
 ```
 
 ---
 
-# 📊 Skills Demonstrated
+#  Skills Demonstrated
 
 - Linux Administration
-- Bash Scripting
 - AWS EC2
 - AWS VPC
-- CloudWatch Monitoring
-- SSH
-- Rsync
+- AWS CloudWatch
+- AWS SNS
+- AWS SQS
+- AWS Lambda
+- AWS DynamoDB
+- Grafana
+- Bash Scripting
 - Cron Jobs
+- Rsync
+- SSH
 - Linux Security
-- Networking
+- Server Monitoring
 - Backup Automation
-- System Administration
-- Git & GitHub
+- Event-Driven Architecture
+- Cloud Monitoring
+- DevOps Automation
 
 ---
 
-# 📸 Screenshots
+#  Screenshots
 
-Add screenshots for:
+Include screenshots of:
 
 - EC2 Instances
-- SSH Login
 - CloudWatch Dashboard
-- Server Monitoring
-- Backup Execution
-- Rsync Synchronization
-- Security Groups
-- Cron Job
+- CloudWatch Alarms
+- SNS Email Notification
+- SQS Queue
+- Lambda Function
+- DynamoDB Table
+- Grafana Dashboard
+- Rsync Backup
+- SSH Login
 - Server Communication
 
 ---
 
-# 🎯 Learning Outcomes
+#  Learning Outcomes
 
 Through this project, I gained practical experience in:
 
-- Linux Server Administration
-- AWS Infrastructure
-- Server Monitoring
-- Backup & Recovery
-- Automation using Bash
-- Networking
+- Linux System Administration
+- AWS Cloud Services
+- Infrastructure Monitoring
+- Event-Driven Automation
+- CloudWatch Monitoring
+- Server Backup & Recovery
 - Linux Security
-- SSH Authentication
-- DevOps Best Practices
+- Networking
+- Automation using Bash
+- Server Synchronization
+- Grafana Visualization
+- AWS Lambda Development
 
 ---
 
-# 🚀 Future Enhancements
+#  Future Enhancements
 
 - Docker
 - Kubernetes
 - Terraform
 - Ansible
-- Prometheus
-- Grafana
 - CI/CD Pipeline
-- AWS Systems Manager
+- Prometheus Integration
 - Auto Scaling
+- Disaster Recovery
 
 ---
 
-# 👨‍💻 Author
+# Author
 
 **Ashutosh Shukla**
 
 - B.Tech CSE (AI & ML)
 - AWS Cloud & DevOps Enthusiast
 - Linux System Administration
-- Automation & Monitoring
+- Cloud Monitoring & Automation
 
-⭐ If you found this project useful, consider giving it a **Star** on GitHub.
+⭐ If you found this project useful, please give it a **Star** on GitHub.
