@@ -1,0 +1,11 @@
+# Backup every day at 2 AM
+0 2 * * * /home/ubuntu/scripts/backup.sh
+
+# Sync every 15 minutes
+*/15 * * * * /home/ubuntu/scripts/rsync_sync.sh
+
+# Rotate SSH keys every Sunday
+0 0 * * 0 /home/ubuntu/scripts/rotate_ssh_keys.sh
+
+# Monitoring every 5 minutes
+*/5 * * * * /home/ubuntu/scripts/monitoring.sh
