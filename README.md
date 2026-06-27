@@ -26,7 +26,74 @@ The project includes:
 - DynamoDB Alert Storage
 - Grafana Dashboard Visualization
 
+
 ---
+
+graph TD
+    %% Styling and Definitions
+    classDef awsSubnet fill:#f9f9f9,stroke:#ff9900,stroke-width:2px,stroke-dasharray: 5 5;
+    classDef compute fill:#eddcd2,stroke:#ff9900,stroke-width:2px,color:#000;
+    classDef monitor fill:#e2ece9,stroke:#00a1c1,stroke-width:2px,color:#000;
+    classDef msg fill:#dfe7fd,stroke:#ff4f40,stroke-width:2px,color:#000;
+    classDef serverless fill:#f0efeb,stroke:#e056fd,stroke-width:2px,color:#000;
+    classDef storage fill:#d8e2dc,stroke:#3c6e71,stroke-width:2px,color:#000;
+    classDef external fill:#f7d1cd,stroke:#e76f51,stroke-width:2px,color:#000;
+
+    %% Architecture Flow
+    subgraph VPC ["☁️ Amazon VPC"]
+        direction TB
+        
+        %% EC2 & Sync Layer
+        subgraph EC2_Layer ["Compute & Replication"]
+            EC1["💻 EC2 Server 1"] <--> |"🔒 SSH Communication"| EC2["💻 EC2 Server 2"]
+            EC1 --> |"🔄 Rsync Backup"| EC2
+        end
+
+        %% CloudWatch Monitoring Layer
+        CW_Agent["⚙️ CloudWatch Agent"]
+        EC1 --> |"Extracts Logs & Metrics"| CW_Agent
+
+        subgraph CloudWatch ["📊 Amazon CloudWatch"]
+            direction LR
+            M["📈 Metrics"]
+            L["📝 Logs"]
+            A["🔔 Alarms"]
+        end
+        CW_Agent --> CloudWatch
+    end
+
+    %% Notification & Routing Layer
+    SNS["📢 Amazon SNS Topic"]
+    A --> |"Trigger on Threshold"| SNS
+
+    Email["📧 Email Alerts"]
+    SQS["📥 Amazon SQS Queue"]
+    
+    SNS --> |"Fan-out Notification"| Email
+    SNS --> |"Buffer Alarm Data"| SQS
+
+    %% Backend Processing & Storage
+    Lambda["⚡ AWS Lambda"]
+    Dynamo["🗄️ Amazon DynamoDB"]
+
+    SQS --> |"Poll & Event Trigger"| Lambda
+    Lambda --> |"Parse & Store Logs"| Dynamo
+
+    %% Visualization
+    Grafana["📉 Grafana Dashboard"]
+    Dynamo --> |"Read Incident History"| Grafana
+    CloudWatch -.-> |"Direct Live Metrics Stream"| Grafana
+
+    %% Assigning Classes for Visual Colors
+    class VPC awsSubnet;
+    class EC1,EC2 compute;
+    class CW_Agent,M,L,A monitor;
+    class SNS,SQS msg;
+    class Lambda serverless;
+    class Dynamo storage;
+    class Email,Grafana external;
+
+
 
 #  Architecture
 
