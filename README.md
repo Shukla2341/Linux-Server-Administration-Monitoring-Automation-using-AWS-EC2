@@ -39,59 +39,72 @@ graph TD
     classDef storage fill:#d8e2dc,stroke:#3c6e71,stroke-width:2px,color:#000;
     classDef external fill:#f7d1cd,stroke:#e76f51,stroke-width:2px,color:#000;
 
-    %% Architecture Flow
+   graph TD
+    %% Global Design Styles
+    classDef vpc fill:#fdfdfd,stroke:#ff9900,stroke-width:2px,stroke-dasharray: 5 5;
+    classDef ec2 fill:#fff2e6,stroke:#ff9900,stroke-width:2px,color:#000;
+    classDef cw fill:#e6f7ff,stroke:#00a1c1,stroke-width:2px,color:#000;
+    classDef sns fill:#ffe6e6,stroke:#ff4f40,stroke-width:2px,color:#000;
+    classDef sqs fill:#f3e6ff,stroke:#a855f7,stroke-width:2px,color:#000;
+    classDef lambda fill:#fffbeb,stroke:#d97706,stroke-width:2px,color:#000;
+    classDef ddb fill:#e6fffa,stroke:#0d9488,stroke-width:2px,color:#000;
+    classDef grafana fill:#22252b,stroke:#f89c1c,stroke-width:2px,color:#fff;
+
     subgraph VPC ["☁️ Amazon VPC"]
         direction TB
         
-        %% EC2 & Sync Layer
+        %% Compute & Sync Layer
         subgraph EC2_Layer ["Compute & Replication"]
-            EC1["💻 EC2 Server 1"] <--> |"🔒 SSH Communication"| EC2["💻 EC2 Server 2"]
-            EC1 --> |"🔄 Rsync Backup"| EC2
+            EC1["💻 EC2 Server 1"]
+            EC2["💻 EC2 Server 2"]
+            EC1 <--> |"🔒 SSH"| EC2
+            EC1 ---> |"🔄 Rsync Backup"| EC2
         end
 
         %% CloudWatch Monitoring Layer
-        CW_Agent["⚙️ CloudWatch Agent"]
-        EC1 --> |"Extracts Logs & Metrics"| CW_Agent
+        Agent["⚙️ CloudWatch Agent"]
+        EC1 ==> |"Logs & Metrics"| Agent
 
         subgraph CloudWatch ["📊 Amazon CloudWatch"]
             direction LR
-            M["📈 Metrics"]
-            L["📝 Logs"]
-            A["🔔 Alarms"]
+            Metrics["📈 Metrics"]
+            Logs["📝 Logs"]
+            Alarms["🔔 Alarms"]
         end
-        CW_Agent --> CloudWatch
+        Agent ==> CloudWatch
     end
 
-    %% Notification & Routing Layer
+    %% Routing Layer
     SNS["📢 Amazon SNS Topic"]
-    A --> |"Trigger on Threshold"| SNS
+    Alarms ==> |"Breached Alert"| SNS
 
     Email["📧 Email Alerts"]
     SQS["📥 Amazon SQS Queue"]
     
-    SNS --> |"Fan-out Notification"| Email
-    SNS --> |"Buffer Alarm Data"| SQS
+    SNS --> |"Direct Page"| Email
+    SNS ==> |"Buffer Payload"| SQS
 
-    %% Backend Processing & Storage
+    %% Automation & Database Layer
     Lambda["⚡ AWS Lambda"]
     Dynamo["🗄️ Amazon DynamoDB"]
 
-    SQS --> |"Poll & Event Trigger"| Lambda
-    Lambda --> |"Parse & Store Logs"| Dynamo
+    SQS ==> |"Event Trigger"| Lambda
+    Lambda ==> |"Write Incident Record"| Dynamo
 
     %% Visualization
-    Grafana["📉 Grafana Dashboard"]
-    Dynamo --> |"Read Incident History"| Grafana
-    CloudWatch -.-> |"Direct Live Metrics Stream"| Grafana
+    Grafana["📊 Grafana Dashboard"]
+    Dynamo ==> |"Query History"| Grafana
+    CloudWatch -.-> |"Stream Live Metrics"| Grafana
 
-    %% Assigning Classes for Visual Colors
-    class VPC awsSubnet;
-    class EC1,EC2 compute;
-    class CW_Agent,M,L,A monitor;
-    class SNS,SQS msg;
-    class Lambda serverless;
-    class Dynamo storage;
-    class Email,Grafana external;
+    %% Assign Color Profiles
+    class VPC vpc;
+    class EC1,EC2 ec2;
+    class Agent,Metrics,Logs,Alarms cw;
+    class SNS sns;
+    class SQS sqs;
+    class Lambda lambda;
+    class Dynamo ddb;
+    class Grafana grafana;
 
 
 
