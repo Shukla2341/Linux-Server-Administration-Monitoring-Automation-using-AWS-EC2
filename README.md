@@ -1,4 +1,33 @@
-<img width="1272" height="3354" alt="image" src="https://github.com/user-attachments/assets/de9b1bd0-3830-441b-836a-b070eaa2b20a" />#  Linux Server Administration & AWS Monitoring Automation
+# 🚀 Linux Server Administration & AWS Monitoring Automation
+
+![GitHub stars](...)
+![GitHub forks](...)
+![License](...)
+![AWS](...)
+![Linux](...)
+
+
+
+
+## 📑 Table of Contents
+
+- Project Overview
+- Architecture
+- Features
+- Technologies
+- Workflow
+- Project Structure
+- Installation
+- Screenshots
+- Skills
+- Learning Outcomes
+- Future Enhancements
+- Author
+
+
+
+
+#  Linux Server Administration & AWS Monitoring Automation
 
 A complete DevOps project demonstrating Linux server administration, monitoring, backup automation, security, and an end-to-end AWS alert automation pipeline using CloudWatch, SNS, SQS, Lambda, DynamoDB, and Grafana.
 
@@ -26,6 +55,9 @@ The project includes:
 - DynamoDB Alert Storage
 - Grafana Dashboard Visualization
 
+
+
+<img width="1272" height="3354" alt="image" src="https://github.com/user-attachments/assets/de9b1bd0-3830-441b-836a-b070eaa2b20a" />
 
 
 ---
