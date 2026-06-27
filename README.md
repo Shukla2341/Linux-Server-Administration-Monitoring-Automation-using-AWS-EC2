@@ -30,7 +30,7 @@ The project includes:
 
 ---
 
-<img width="1440" height="1960" alt="image" src="https://github.com/user-attachments/assets/5aca6275-d311-4253-a409-0d174e7e18d4" />
+![Uploading image.png…]()
 
 
 
