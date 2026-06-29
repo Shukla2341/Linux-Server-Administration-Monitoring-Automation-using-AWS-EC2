@@ -470,6 +470,19 @@ Through this project, I gained practical experience in:
 
 # Author
 
+Interview Talking Points
+
+During interviews, you can explain that this project demonstrates experience in:
+
+Designing a production-ready Linux server environment.
+Monitoring infrastructure health using AWS CloudWatch.
+Building an event-driven alerting pipeline using CloudWatch → SNS → SQS → Lambda → DynamoDB.
+Automating server administration tasks with Bash scripts and Cron.
+Implementing Linux security best practices to secure production servers.
+Creating real-time Grafana dashboards for operational visibility.
+Building a scalable and reliable cloud monitoring solution using AWS managed services.
+Applying DevOps principles such as automation, monitoring, observability, infrastructure reliability, and incident response.
+
 **Ashutosh Shukla**
 
 - B.Tech CSE (AI & ML)
